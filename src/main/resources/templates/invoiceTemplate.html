@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hóa đơn bán hàng</title>
+    <style>
+        .invoice {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            font-family: Arial, sans-serif;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .left-section {
+            float: left;
+            width: 50%;
+        }
+        .right-section {
+            float: right;
+            width: 50%;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            float: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="invoice">
+    <h2 style="text-align: center;">Hóa đơn bán hàng</h2>
+    <div class="section">
+        <div class="left-section">
+            <p>Mã đơn hàng: <span th:text="${order.id}"></span></p>
+            <p>Ngày tạo: <span th:text="${#dates.format(order.updatedAt, 'HH:mm:ss dd/MM/yyyy')}"></span></p>
+            <p>Nhân viên: <span th:text="${user.fullName} "></span> </p>
+        </div>
+        <div class="right-section">
+            <p>Họ tên khách hàng: <span th:text="${order.customer.fullName}"></span></p>
+            <p>Số điện thoại: <span th:text="${order.customer.phone}"></span></p>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <div class="section">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Màu sắc</th>
+                <th>Kích cỡ</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${orderItem}">
+                <td th:text="${item.productItem.product.product_Name}"></td>
+                <td th:text="${item.productItem.color.name}"></td>
+                <td th:text="${item.productItem.size.name}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.price.toPlainString()}"></td>
+                <td th:text="${item.total.toPlainString()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="total">
+        Thành tiền: <span th:text="${order.total.toPlainString()}"></span> đồng
+    </div>
+    <br/><br/><br/>
+    <p>Nếu có bất kỳ vấn đề gì, vui lòng liên hệ với cửa hàng:</p>
+    <p>Số điện thoại: 0123456789</p>
+    <p>Email: electronicStore@gmail.com</p>
+</div>
+</body>
+</html>
