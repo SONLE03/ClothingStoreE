@@ -10,7 +10,7 @@ import com.sa.clothingstore.model.CommonModel;
 import com.sa.clothingstore.model.event.Coupon;
 import com.sa.clothingstore.model.order.*;
 import com.sa.clothingstore.model.product.ProductItem;
-import com.sa.clothingstore.model.customer.Customer;
+import com.sa.clothingstore.model.user.customer.Customer;
 import com.sa.clothingstore.repository.event.CouponRepository;
 import com.sa.clothingstore.repository.order.OrderItemRepository;
 import com.sa.clothingstore.repository.order.OrderRepository;
@@ -20,7 +20,6 @@ import com.sa.clothingstore.service.email.EmailService;
 import com.sa.clothingstore.service.user.service.UserDetailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

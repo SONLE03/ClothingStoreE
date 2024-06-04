@@ -12,12 +12,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public enum Role {
     ADMIN("admin"),
-    STAFF("staff");
+    STAFF("staff"),
+    CUSTOMER("customer");
     private final String role;
     public static Role convertIntegerToRole(int role) {
         return switch (role) {
             case 0 -> Role.ADMIN;
             case 1 -> Role.STAFF;
+            case 2 -> Role.CUSTOMER;
             default -> null;
         };
     }

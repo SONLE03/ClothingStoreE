@@ -5,7 +5,6 @@ import com.sa.clothingstore.dto.request.user.ChangePasswordRequest;
 import com.sa.clothingstore.dto.request.user.UserRequest;
 import com.sa.clothingstore.model.user.Role;
 import com.sa.clothingstore.model.user.User;
-import com.sa.clothingstore.service.customer.CustomerService;
 import com.sa.clothingstore.service.user.service.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
@@ -31,6 +30,7 @@ public class UserController {
     private void initRoleToServiceMap() {
         roleToServiceMap.put(0, adminService);
         roleToServiceMap.put(1, staffService);
+        roleToServiceMap.put(2, customerService);
     }
     @GetMapping(APIConstant.GET_ALL)
     public List<User> getAllUsersByRole(@PathVariable Integer role){

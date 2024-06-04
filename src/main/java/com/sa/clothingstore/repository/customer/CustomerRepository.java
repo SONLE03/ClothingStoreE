@@ -1,6 +1,6 @@
 package com.sa.clothingstore.repository.customer;
 
-import com.sa.clothingstore.model.customer.Customer;
+import com.sa.clothingstore.model.user.customer.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

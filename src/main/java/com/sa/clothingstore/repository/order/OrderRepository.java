@@ -4,7 +4,7 @@ import com.sa.clothingstore.dto.response.order.OrderResponse;
 import com.sa.clothingstore.model.order.Order;
 import com.sa.clothingstore.model.order.OrderStatus;
 import com.sa.clothingstore.model.product.Product;
-import com.sa.clothingstore.model.customer.Customer;
+import com.sa.clothingstore.model.user.customer.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

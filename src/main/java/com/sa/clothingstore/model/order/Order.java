@@ -2,10 +2,9 @@ package com.sa.clothingstore.model.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sa.clothingstore.model.CommonModel;
-import com.sa.clothingstore.model.customer.Address;
+import com.sa.clothingstore.model.user.customer.Address;
 import com.sa.clothingstore.model.event.Coupon;
-import com.sa.clothingstore.model.customer.Customer;
-import com.sa.clothingstore.model.product.ProductStatus;
+import com.sa.clothingstore.model.user.customer.Customer;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
