@@ -57,6 +57,9 @@ public class APIConstant {
     public static final String PRODUCTS = VERSION + "/products";
     public static final String PRODUCT_ID = "/{productId}";
 
+    // Favorite Routes
+    public static final String FAVORITES = VERSION + "/favorites";
+
     // Review
     public static final String REVIEWS = VERSION + "/reviews";
     public static final String REVIEW_ID = "/{reviewId}";

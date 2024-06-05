@@ -1,14 +1,19 @@
 package com.sa.clothingstore.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sa.clothingstore.model.CommonModel;
+import com.sa.clothingstore.model.cart.CartItem;
 import com.sa.clothingstore.model.category.Branch;
 import com.sa.clothingstore.model.category.Category;
+import com.sa.clothingstore.model.favorite.FavoriteItem;
+import com.sa.clothingstore.model.importInvoice.ImportItem;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 @Entity
 @Getter
@@ -40,4 +45,8 @@ public class Product extends CommonModel {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    Set<FavoriteItem> favoriteItems;
 }
