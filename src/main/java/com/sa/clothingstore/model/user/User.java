@@ -67,6 +67,7 @@ public class User extends CommonModel implements UserDetails {
         this.image = user.getImage();
         this.role = user.getRole();
         this.enabled = user.enabled;
+        this.nickName = user.getNickName();
     }
 
     @Override

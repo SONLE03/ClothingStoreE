@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class ClothingstoreApplication {
+public class git aClothingstoreApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClothingstoreApplication.class, args);
