@@ -6,12 +6,14 @@ import com.sa.clothingstore.dto.request.user.UserRequest;
 import com.sa.clothingstore.model.user.Role;
 import com.sa.clothingstore.model.user.User;
 import com.sa.clothingstore.service.user.service.*;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
@@ -55,15 +57,15 @@ public class UserController {
     }
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public String createUser(@RequestBody @Valid UserRequest userRequest) throws IOException {
+    public String createUser(@RequestParam("image") @Nullable MultipartFile image, @ModelAttribute @Valid UserRequest userRequest) throws IOException {
         int userRole = userRequest.getRole();
-        roleToServiceMap.get(userRole).createUser(userRequest, Role.convertIntegerToRole(userRole));
+        roleToServiceMap.get(userRole).createUser(userRequest, Role.convertIntegerToRole(userRole), image);
         return "User created successfully";
     }
     @PutMapping(APIConstant.USER_ID)
     @ResponseStatus(HttpStatus.OK)
-    public String updateUser(@PathVariable UUID userId, @RequestBody @Valid UserRequest userRequest) throws IOException {
-        roleToServiceMap.get(userDetailService.getRoleById(userId)).updateUser(userId, userRequest);
+    public String updateUser(@PathVariable UUID userId, @RequestParam("image") @Nullable MultipartFile image, @ModelAttribute @Valid UserRequest userRequest) throws IOException {
+        roleToServiceMap.get(userDetailService.getRoleById(userId)).updateUser(userId, userRequest, image);
         return "User modified successfully";
     }
     @DeleteMapping(APIConstant.USER_ID)

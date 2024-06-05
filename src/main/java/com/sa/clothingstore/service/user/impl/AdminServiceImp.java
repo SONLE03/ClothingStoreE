@@ -10,6 +10,7 @@ import com.sa.clothingstore.service.user.factory.AdminServiceFactory;
 import com.sa.clothingstore.service.user.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,13 +27,13 @@ public class AdminServiceImp implements AdminService {
         return adminServiceFatory.getAllUsers(role);
     }
     @Override
-    public void createUser(UserRequest userRequest, Role role) throws IOException {
-        userRepository.save(adminServiceFatory.create(userRequest, role));
+    public void createUser(UserRequest userRequest, Role role, MultipartFile image) throws IOException {
+        userRepository.save(adminServiceFatory.create(userRequest, role, image));
     }
 
     @Override
-    public void updateUser(UUID userId, UserRequest userRequest) throws IOException {
-        userRepository.save(adminServiceFatory.update(userId, userRequest));
+    public void updateUser(UUID userId, UserRequest userRequest, MultipartFile image) throws IOException {
+        userRepository.save(adminServiceFatory.update(userId, userRequest, image));
     }
 
     @Override

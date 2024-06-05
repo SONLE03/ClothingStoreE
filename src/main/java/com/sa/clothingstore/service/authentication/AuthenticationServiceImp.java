@@ -10,8 +10,6 @@ import com.sa.clothingstore.exception.BusinessException;
 import com.sa.clothingstore.model.user.RefreshToken;
 import com.sa.clothingstore.model.user.Role;
 import com.sa.clothingstore.model.user.User;
-import com.sa.clothingstore.model.user.admin.Admin;
-import com.sa.clothingstore.model.user.customer.Customer;
 import com.sa.clothingstore.repository.customer.CustomerRepository;
 import com.sa.clothingstore.repository.user.UserRepository;
 import com.sa.clothingstore.repository.user.admin.AdminRepository;
@@ -126,7 +124,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
         String jwt = jwtService.generateTokenFromUsername(user.getUsername());
         RefreshToken refreshToken = refreshTokenService.generateRefreshToken(user.getId());
         ResponseCookie jwtRefreshCookie = jwtService.generateRefreshJwtCookie(refreshToken.getToken());
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse(user.getId(), jwt, refreshToken.getToken(), user.getRole().toString(), Arrays.asList(user.getAuthorities().toArray()), jwt, refreshToken.getToken());
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse(user.getId(), user.getRole().toString(), Arrays.asList(user.getAuthorities().toArray()), jwt, refreshToken.getToken());
         return authenticationResponse;
     }
 

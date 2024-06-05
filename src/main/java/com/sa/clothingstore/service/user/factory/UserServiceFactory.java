@@ -14,6 +14,7 @@ import com.sa.clothingstore.util.fileUpload.FileUploadImp;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -36,7 +37,7 @@ public abstract class UserServiceFactory  {
     protected abstract List<User> getAllUsersByRole(Integer role);
 
     @Transactional
-    public User create(UserRequest userRequest, Role role) throws IOException {
+    public User create(UserRequest userRequest, Role role, MultipartFile image) throws IOException {
         userRepository.findByEmail(userRequest.getEmail()).ifPresent(user -> {
             throw new BusinessException(APIStatus.EMAIL_ALREADY_EXISTED);
         });
@@ -55,25 +56,25 @@ public abstract class UserServiceFactory  {
                 .build();
         user.setCommonCreate(userDetailService.getIdLogin());
 
-        var userImage = userRequest.getImage();
+        var userImage = image;
         if(userImage != null){
             BufferedImage bi = ImageIO.read(userImage.getInputStream());
             if (bi == null) {
                 throw new BusinessException(APIStatus.IMAGE_NOT_FOUND);
             }
             Map result = fileUploadImp.upload(userImage, "avatars");
-            Image image =  Image.builder()
+            Image avatar =  Image.builder()
                     .name((String) result.get("original_filename"))
                     .url((String) result.get("url"))
                     .cloudinaryId((String) result.get("public_id"))
                     .build();
-            imageRepository.save(image);
-            user.setImage(image);
+            imageRepository.save(avatar);
+            user.setImage(avatar);
         }
         return createUser(user, userRequest);
     }
 
-    public User update(UUID userId, UserRequest userRequest) throws IOException {
+    public User update(UUID userId, UserRequest userRequest, MultipartFile image) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(() ->{
                 throw new BusinessException(APIStatus.USER_NOT_FOUND);
             }
@@ -99,7 +100,7 @@ public abstract class UserServiceFactory  {
         user.setDateOfBirth(userRequest.getDateOfBirth());
         user.setEnabled(userRequest.getEnable() == Status.ACTIVE.ordinal());
 
-        var userImage = userRequest.getImage();
+        var userImage = image;
         if(userImage != null){
             fileUploadImp.delete(user.getImage().getCloudinaryId());
             BufferedImage bi = ImageIO.read(userImage.getInputStream());
@@ -107,13 +108,13 @@ public abstract class UserServiceFactory  {
                 throw new BusinessException(APIStatus.IMAGE_NOT_FOUND);
             }
             Map result = fileUploadImp.upload(userImage, "avatars");
-            Image image =  Image.builder()
+            Image avatar =  Image.builder()
                     .name((String) result.get("original_filename"))
                     .url((String) result.get("url"))
                     .cloudinaryId((String) result.get("public_id"))
                     .build();
-            imageRepository.save(image);
-            user.setImage(image);
+            imageRepository.save(avatar);
+            user.setImage(avatar);
         }
         user.setCommonUpdate(userDetailService.getIdLogin());
 

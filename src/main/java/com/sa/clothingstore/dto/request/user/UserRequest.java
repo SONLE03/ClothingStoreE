@@ -34,5 +34,4 @@ public class UserRequest{
     @Max(value = 2, message = "Role must be at most 2")
     private int role;
     private Date dateOfBirth;
-    private MultipartFile image;
 }
