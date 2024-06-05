@@ -58,7 +58,7 @@ public class ProductServiceImp implements ProductService{
         for (Object[] objArray : objects) {
             UUID id = (UUID) objArray[0];
             String productName = (String) objArray[1];
-            BigDecimal   price = (BigDecimal) objArray[2];
+            BigDecimal price = (BigDecimal) objArray[2];
 
             ProductResponse productResponse = new ProductResponse();
             productResponse.setId(id);
@@ -67,8 +67,12 @@ public class ProductServiceImp implements ProductService{
             productResponse.setCategory((String) objArray[3]);
             productResponse.setBranch((String) objArray[4]);
             productResponse.setDescription((String) objArray[5]);
-            productResponse.setProductStatus((ProductStatus) objArray[6]);
-            productResponse.setImage((String) objArray[7]);
+
+            // Chuyển đổi chuỗi các URL thành danh sách URL
+            String urlsString = (String) objArray[6];
+            List<String> urls = Arrays.asList(urlsString.split(","));
+            productResponse.setImages(urls);
+
             productResponseList.add(productResponse);
         }
         return productResponseList;

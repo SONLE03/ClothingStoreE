@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 @Getter
 @Setter
@@ -29,7 +30,5 @@ public class ProductResponse {
     @JsonProperty
     private String branch;
     @JsonProperty
-    private ProductStatus productStatus;
-    @JsonProperty
-    private String image;
+    private List<String> images;
 }

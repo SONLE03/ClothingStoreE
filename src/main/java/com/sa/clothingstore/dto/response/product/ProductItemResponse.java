@@ -17,6 +17,5 @@ public class ProductItemResponse {
     private String colorName;
     private int quantity;
     private BigDecimal price;
-
     // Constructors, getters, and setters
 }

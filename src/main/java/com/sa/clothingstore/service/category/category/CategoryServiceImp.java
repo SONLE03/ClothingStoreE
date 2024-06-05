@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -101,7 +98,11 @@ public class CategoryServiceImp implements CategoryService{
             productResponse.setCategory((String) objArray[3]);
             productResponse.setBranch((String) objArray[4]);
             productResponse.setDescription((String) objArray[5]);
-            productResponse.setProductStatus((ProductStatus) objArray[6]);
+
+            String urlsString = (String) objArray[6];
+            List<String> urls = Arrays.asList(urlsString.split(","));
+            productResponse.setImages(urls);
+
             productResponseList.add(productResponse);
         }
         return productResponseList;

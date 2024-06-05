@@ -10,9 +10,11 @@ import com.sa.clothingstore.exception.BusinessException;
 import com.sa.clothingstore.model.user.RefreshToken;
 import com.sa.clothingstore.model.user.Role;
 import com.sa.clothingstore.model.user.User;
+import com.sa.clothingstore.model.user.admin.Admin;
 import com.sa.clothingstore.model.user.customer.Customer;
 import com.sa.clothingstore.repository.customer.CustomerRepository;
 import com.sa.clothingstore.repository.user.UserRepository;
+import com.sa.clothingstore.repository.user.admin.AdminRepository;
 import com.sa.clothingstore.service.token.JwtService;
 import com.sa.clothingstore.service.token.RefreshTokenService;
 import com.sa.clothingstore.service.user.service.UserDetailService;
@@ -45,6 +47,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
     private final AuthenticationManager authenticationManager;
     private final UserDetailService userDetailService;
     private final CustomerRepository customerRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     @Transactional
@@ -61,10 +64,11 @@ public class AuthenticationServiceImp implements AuthenticationService{
         user.setFullName(registerRequest.getFullname());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEnabled(true);
-        user.setRole(Role.CUSTOMER);
-        Customer customer = new Customer(user);
-        customer.setCommonCreate(userDetailService.getIdLogin());
-        customerRepository.save(customer);
+        user.setRole(Role.ADMIN);
+//        Admin admin = new Admin(user);
+//        admin.setCommonCreate(userDetailService.getIdLogin());
+//        adminRepository.save(admin);
+
         return user;
     }
 

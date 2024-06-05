@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, UUID> {
-    @Query("SELECT p.id, p.product_Name, p.price, p.category.name, p.branch.name, p.description, p.productStatus, MIN(i.url) " +
+    @Query("SELECT p.id, p.product_Name, p.price, p.category.name, p.branch.name, p.description, GROUP_CONCAT(i.url) " +
             "FROM Product p " +
             "JOIN Image i ON p.id = i.product.id " +
             "WHERE p.productStatus != 'DELETED' " +
@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p where p.id = ?1")
     Product getProductById(UUID productId);
 
-    @Query("SELECT p.id, p.product_Name, p.price, p.category.name, p.branch.name, p.description, p.productStatus  FROM Product p WHERE p.category.id = :categoryId AND p.productStatus != 'DELETED' ORDER BY p.createdAt DESC")
+    @Query("SELECT p.id, p.product_Name, p.price, p.category.name, p.branch.name, p.description, GROUP_CONCAT(i.url) FROM Product p JOIN Image i ON p.id = i.product.id  WHERE p.category.id = :categoryId AND p.productStatus != 'DELETED' ORDER BY p.createdAt DESC")
     List<Object[]> getAllProductByCategoryId(@Param("categoryId") UUID categoryId);
 
 }
