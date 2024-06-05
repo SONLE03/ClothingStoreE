@@ -35,6 +35,8 @@ public class User extends CommonModel implements UserDetails {
     private UUID id;
     @Column(name = "fullname")
     private String fullName;
+    @Column(name = "nickName")
+    private String nickName;
     @Column(name = "phone")
     private String phone;
     @Column(name = "email")

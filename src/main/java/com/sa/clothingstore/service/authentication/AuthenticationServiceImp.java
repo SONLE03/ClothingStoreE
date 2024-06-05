@@ -62,13 +62,13 @@ public class AuthenticationServiceImp implements AuthenticationService{
         user.setEmail(registerRequest.getEmail());
         user.setPhone(registerRequest.getPhone());
         user.setFullName(registerRequest.getFullname());
+        user.setNickName(userDetailService.generateNickname(registerRequest.getEmail()));
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEnabled(true);
         user.setRole(Role.ADMIN);
 //        Admin admin = new Admin(user);
 //        admin.setCommonCreate(userDetailService.getIdLogin());
 //        adminRepository.save(admin);
-
         return user;
     }
 

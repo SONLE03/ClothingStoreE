@@ -25,13 +25,13 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class UserDetailServiceImp implements UserDetailService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
     private final ForgotPasswordRepository forgotPasswordRepository;
     @PostConstruct
     private User getUserLogin(){
@@ -121,5 +121,19 @@ public class UserDetailServiceImp implements UserDetailService {
         }
         userRepository.updatePassword(email, passwordEncoder.encode(changePasswordRequest.password()));
         return "Password has been changed!";
+    }
+    @Override
+    public String generateNickname(String email) {
+        String username = email.substring(0, email.indexOf("@"));
+        Random random = new Random();
+        int length = username.length() / 2;
+        StringBuilder nickname = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(username.length());
+            nickname.append(username.charAt(index));
+        }
+
+        return nickname.toString();
     }
 }

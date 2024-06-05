@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -44,6 +45,7 @@ public abstract class UserServiceFactory  {
         });
         User user = User.builder()
                 .fullName(userRequest.getFullName())
+                .nickName(userDetailService.generateNickname(userRequest.getEmail()))
                 .email(userRequest.getEmail())
                 .phone(userRequest.getPhone())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
@@ -92,6 +94,7 @@ public abstract class UserServiceFactory  {
         });
         user.setEmail(userRequest.getEmail());
         user.setFullName(userRequest.getFullName());
+        user.setNickName(userDetailService.generateNickname(userRequest.getEmail()));
         user.setPhone(userRequest.getPhone());
         user.setDateOfBirth(userRequest.getDateOfBirth());
         user.setEnabled(userRequest.getEnable() == Status.ACTIVE.ordinal());

@@ -59,10 +59,6 @@ public class CartServiceImp implements CartService{
                 .orElseThrow(() ->  new BusinessException(APIStatus.PRODUCT_ITEM_NOT_FOUND));
 
         Integer quantity = cartRequest.getQuantity();
-        if(quantity > productItem.getQuantity()) {
-            throw new BusinessException(APIStatus.INSUFFICIENT_PRODUCT_QUANTITY);
-        }
-
         CartItem cartItem = cartItemRepository.findByCustomerAndProductItem(customer, productItem);
         if(cartItem != null){
             quantity += cartItem.getQuantity();
@@ -72,6 +68,9 @@ public class CartServiceImp implements CartService{
             cartItem.setQuantity(quantity);
             cartItemRepository.save(cartItem);
         }else {
+            if(quantity > productItem.getQuantity()) {
+                throw new BusinessException(APIStatus.INSUFFICIENT_PRODUCT_QUANTITY);
+            }
             CartItemKey cartItemKey = new CartItemKey();
             cartItemKey.setProductItemId(productItemId);
             cartItemKey.setCustomerId(customerId);
@@ -87,20 +86,18 @@ public class CartServiceImp implements CartService{
 
     @Override
     @Transactional
-    public void updateProductInCart(UUID customerId, List<CartRequest> cartRequestList) {
+    public void updateProductInCart(UUID customerId, CartRequest cartRequestList) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new BusinessException(APIStatus.CUSTOMER_NOT_FOUND));
-        for(CartRequest request : cartRequestList){
-            ProductItem productItem = productItemRepository.findById(request.getProductItemId())
-                    .orElseThrow(() -> new BusinessException(APIStatus.PRODUCT_ITEM_NOT_FOUND));
-            Integer quantity = request.getQuantity();
-            if(quantity > productItem.getQuantity()){
-                throw new BusinessException(APIStatus.INSUFFICIENT_PRODUCT_QUANTITY);
-            }
-            CartItem cartItem = cartItemRepository.findByCustomerAndProductItem(customer, productItem);
-            cartItem.setQuantity(quantity);
-            cartItemRepository.save(cartItem);
+        ProductItem productItem = productItemRepository.findById(cartRequestList.getProductItemId())
+                .orElseThrow(() -> new BusinessException(APIStatus.PRODUCT_ITEM_NOT_FOUND));
+        Integer quantity = cartRequestList.getQuantity();
+        if(quantity > productItem.getQuantity()){
+            throw new BusinessException(APIStatus.INSUFFICIENT_PRODUCT_QUANTITY);
         }
+        CartItem cartItem = cartItemRepository.findByCustomerAndProductItem(customer, productItem);
+        cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
     }
 
     @Override

@@ -18,4 +18,5 @@ public interface UserDetailService {
     User getProfile(UUID userId);
     String verifyOtp(Integer otp, String email);
     String changePassword(ChangePasswordRequest changePasswordRequest, String email);
+    String generateNickname(String email);
 }

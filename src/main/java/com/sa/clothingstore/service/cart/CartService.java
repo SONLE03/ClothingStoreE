@@ -9,6 +9,6 @@ import java.util.UUID;
 public interface CartService {
     List<CartResponse> getProductInCart(UUID customerId);
     void importProductToCart(UUID customerId, CartRequest cartRequest);
-    void updateProductInCart(UUID customerId, List<CartRequest> cartRequestList);
+    void updateProductInCart(UUID customerId, CartRequest cartRequestList);
     void deleteProductInCart(UUID customerId, List<CartRequest> cartRequestList);
 }

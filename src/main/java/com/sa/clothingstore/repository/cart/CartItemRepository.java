@@ -16,6 +16,12 @@ public interface CartItemRepository extends JpaRepository<CartItem, UUID> {
     CartItem findByCustomerAndProductItem(Customer customer, ProductItem productItem);
     void deleteByCustomerAndProductItem(Customer customer, ProductItem productItem);
 
-    @Query("SELECT new com.sa.clothingstore.dto.response.cart.CartResponse(ci.productItem.id, ci.productItem.size.name, ci.productItem.color.name, ci.quantity, ci.productItem.product.price, ci.productItem.product.product_Name) FROM CartItem ci WHERE ci.customer = :customer")
+    @Query("SELECT new com.sa.clothingstore.dto.response.cart.CartResponse(ci.productItem.id, ci.productItem.size.name, ci.productItem.color.name, ci.quantity, ci.productItem.product.price, ci.productItem.product.product_Name, MIN(i.url)) " +
+            "FROM CartItem ci " +
+            "JOIN ci.productItem.product p " +
+            "JOIN Image i ON p.id = i.product.id " +
+            "WHERE ci.customer = :customer " +
+            "GROUP BY ci.productItem.id")
+
     List<CartResponse> findCartResponsesByCustomer(Customer customer);
 }

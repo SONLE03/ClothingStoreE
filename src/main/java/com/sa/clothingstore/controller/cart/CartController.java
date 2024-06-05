@@ -30,7 +30,7 @@ public class CartController {
     }
     @PutMapping(APIConstant.CART_ID)
     @ResponseStatus(HttpStatus.OK)
-    public String updateProductInCart(@PathVariable UUID customerId, @RequestBody List<@Valid CartRequest> cartRequestList){
+    public String updateProductInCart(@PathVariable UUID customerId, @RequestBody @Valid CartRequest cartRequestList){
         cartService.updateProductInCart(customerId, cartRequestList);
         return "Product information in the shopping cart was successfully changed";
     }
