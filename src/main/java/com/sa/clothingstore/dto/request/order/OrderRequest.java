@@ -16,6 +16,8 @@ import java.util.UUID;
 public class OrderRequest {
     @NotNull(message = "Missing customer")
     private UUID customerId;
+    @NotNull(message = "Missing address")
+    private UUID addressId;
     private UUID coupon;
     @NotNull(message = "Missing payment method")
     private Integer paymentMethod;

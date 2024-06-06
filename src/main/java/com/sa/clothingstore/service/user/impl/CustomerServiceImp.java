@@ -30,7 +30,10 @@ public class CustomerServiceImp implements CustomerService {
     private final CustomerRepository customerRepository;
     @Override
     public List<Address> getAddressByCustomer(UUID customerId) {
-        return null;
+        if(!customerRepository.existsById(customerId)){
+            throw new BusinessException(APIStatus.CUSTOMER_NOT_FOUND);
+        }
+        return addressRepository.getAllCustomerAddress(customerId);
     }
 
     @Override
@@ -49,13 +52,18 @@ public class CustomerServiceImp implements CustomerService {
                 .customer(customer)
                 .build();
         addressRepository.save(address);
-        System.out.println(address.getId());
     }
     @Override
     @Transactional
-    public void updateAddress(UUID addressId, AddressRequest addressRequest){
+    public void updateAddress(UUID customerId, UUID addressId, AddressRequest addressRequest){
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new BusinessException(APIStatus.CUSTOMER_NOT_FOUND));
+        if(!customerRepository.existsById(customerId)){
+            throw new BusinessException(APIStatus.CUSTOMER_NOT_FOUND);
+        }
+        if(!addressRepository.existsAddressForCustomer(customerId,addressId)){
+            throw new BusinessException(APIStatus.CUSTOMER_ADDRESS_NOT_FOUND);
+        }
         address.setPostalCode(addressRequest.getPostalCode());
         address.setWard(addressRequest.getWard());
         address.setSpecificAddress(addressRequest.getSpecificAddress());
@@ -64,6 +72,14 @@ public class CustomerServiceImp implements CustomerService {
         address.setPhone(addressRequest.getPhone());
         address.setDefault(addressRequest.isDefault());
         addressRepository.save(address);
+    }
+
+    @Override
+    public void deleteAddress(UUID addressId) {
+        if(!addressRepository.existsById(addressId)){
+            throw new BusinessException(APIStatus.ADDRESS_NOT_FOUND);
+        }
+        addressRepository.deleteById(addressId);
     }
 
     @Override

@@ -44,6 +44,8 @@ public class Order extends CommonModel {
     private BigDecimal total;
     @Column(name = "note")
     private String note;
+    @Column(name = "shipping_at")
+    private Date shippingAt;
     @Column(name = "completed_at")
     private Date completedAt;
     @Column(name = "payment_at")

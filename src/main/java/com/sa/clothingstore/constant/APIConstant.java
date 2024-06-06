@@ -21,10 +21,10 @@ public class APIConstant {
     public static final String VERIFY_OTP = "verifyOtp/{otp}/{email}";
     public static final String CHANGE_PASSWORD = "/changePassword/{email}";
     // Customer
-    public static final String CUSTOMERS = VERSION + "/customers";
+    public static final String ADDRESS = VERSION + "/address";
     public static final String CUSTOMER_ID = "/{customerId}";
-    public static final String CREATE_ADDRESS = "address/{userId}";
-    public static final String UPDATE_ADDRESS = "address/{addressId}";
+    public static final String CUSTOMER_ADDRESS = "/{customerId}/{addressId}";
+    public static final String ADDRESS_ID = "/{addressId}";
     // Email Routes
     public static final String EMAIL = VERSION + "/email";
     public static final String SEND_OTP = "/verifyEmail/{email}";
@@ -80,6 +80,7 @@ public class APIConstant {
     //Order
     public static final String ORDERS = VERSION + "/orders";
     public static final String ORDER_ID = "/{orderId}";
+    public static final String ORDER_ID_STATUS = "/{orderId}/{orderStatus}";
     public static final String ORDER_STATUS = "/status/{orderStatus}";
     public static final String ORDER_CUSTOMER = "/customer/{customerId}";
     // VNPay

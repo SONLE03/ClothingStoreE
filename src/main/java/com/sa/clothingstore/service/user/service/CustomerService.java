@@ -9,5 +9,6 @@ import java.util.UUID;
 public interface CustomerService extends UserService {
     List<Address> getAddressByCustomer(UUID customerId);
     void createAddress(UUID userId, AddressRequest addressRequest);
-    void updateAddress(UUID addressId, AddressRequest addressRequest);
+    void updateAddress(UUID customerId, UUID addressId, AddressRequest addressRequest);
+    void deleteAddress(UUID addressId);
 }

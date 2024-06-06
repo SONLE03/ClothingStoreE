@@ -10,7 +10,9 @@ import com.sa.clothingstore.model.CommonModel;
 import com.sa.clothingstore.model.event.Coupon;
 import com.sa.clothingstore.model.order.*;
 import com.sa.clothingstore.model.product.ProductItem;
+import com.sa.clothingstore.model.user.customer.Address;
 import com.sa.clothingstore.model.user.customer.Customer;
+import com.sa.clothingstore.repository.customer.AddressRepository;
 import com.sa.clothingstore.repository.event.CouponRepository;
 import com.sa.clothingstore.repository.order.OrderItemRepository;
 import com.sa.clothingstore.repository.order.OrderRepository;
@@ -18,6 +20,7 @@ import com.sa.clothingstore.repository.product.ProductItemRepository;
 import com.sa.clothingstore.repository.customer.CustomerRepository;
 import com.sa.clothingstore.service.email.EmailService;
 import com.sa.clothingstore.service.user.service.UserDetailService;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,7 @@ public class OrderServiceImp implements OrderService{
     private final OrderItemRepository orderItemRepository;
     private final CouponRepository couponRepository;
     private final EmailService emailService;
+    private final AddressRepository addressRepository;
 
     @Override
     public List<OrderResponse> getAllOrder() {
@@ -72,6 +76,11 @@ public class OrderServiceImp implements OrderService{
     public UUID createOrder(OrderRequest orderRequest) {
         Customer customer = customerRepository.findById(orderRequest.getCustomerId()).orElseThrow(
                 () -> new BusinessException(APIStatus.CUSTOMER_NOT_FOUND));
+        Address address = addressRepository.findById(orderRequest.getAddressId()).orElseThrow(
+                () ->  new BusinessException(APIStatus.ADDRESS_NOT_FOUND));
+        if(customer.getId() != address.getCustomer().getId()){
+            throw new BusinessException(APIStatus.CUSTOMER_ADDRESS_NOT_FOUND);
+        }
         Coupon coupon;
         var couponId = orderRequest.getCoupon();
         if(couponId == null){
@@ -92,7 +101,9 @@ public class OrderServiceImp implements OrderService{
         Order order = Order.builder()
                 .note(orderRequest.getNote())
                 .customer(customer)
+                .address(address)
                 .coupon(coupon)
+                .note(orderRequest.getNote())
                 .build();
         orderRepository.save(order);
         List<OrderItemRequest> orderItemList = orderRequest.getOrderItemRequestList();
@@ -131,7 +142,7 @@ public class OrderServiceImp implements OrderService{
         order.setTotal(_total);
         order.setCommonCreate(userDetailService.getIdLogin());
         PaymentMethod paymentMethod = PaymentMethod.convertIntegerToPaymentMethod(orderRequest.getPaymentMethod());
-        if(paymentMethod == PaymentMethod.CASH){
+        if(paymentMethod != PaymentMethod.CASH){
             order.setOrderStatus(OrderStatus.COMPLETED);
             order.setCompletedAt(CommonModel.resultTimestamp());
             sendOrder(order.getId());
@@ -145,27 +156,14 @@ public class OrderServiceImp implements OrderService{
 
     @Override
     @Transactional
-    public void updateOrderStatusByCash(UUID orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new BusinessException(APIStatus.ORDER_NOT_FOUND));
-        order.setPaymentMethod(PaymentMethod.CASH);
-        order.setCompletedAt(CommonModel.resultTimestamp());
-        order.setOrderStatus(OrderStatus.COMPLETED);
-        order.setCommonUpdate(userDetailService.getIdLogin());
-        sendOrder(orderId);
-        orderRepository.save(order);
-    }
-
-    @Override
-    @Transactional
     public void updateOrderStatusVNPay(UUID orderId, Integer status) {
         final Integer paymentSuccess = 1;
         final Integer paymentFail = 0;
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new BusinessException(APIStatus.ORDER_NOT_FOUND));
         if (status == paymentSuccess) {
-            order.setCompletedAt(CommonModel.resultTimestamp());
-            order.setOrderStatus(OrderStatus.COMPLETED);
+            order.setPaymentAt(CommonModel.resultTimestamp());
+            order.setOrderStatus(OrderStatus.PAID);
         } else {
             order.setCanceledAt(CommonModel.resultTimestamp());
             order.setOrderStatus(OrderStatus.CANCELED);
@@ -180,21 +178,24 @@ public class OrderServiceImp implements OrderService{
                 () -> new BusinessException(APIStatus.ORDER_NOT_FOUND));
         emailService.sendOrder(order);
     }
-
     @Override
-    public void cancelOrder(UUID orderId) {
+    public void updateOrderStatus(UUID orderId, Integer status) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new BusinessException(APIStatus.ORDER_NOT_FOUND));
-        Set<OrderItem> orderItemSet = order.getOrderItems();
-        for(OrderItem item : orderItemSet){
-            ProductItem productItem = productItemRepository.findById(item.getProductItem().getId()).orElseThrow(
-                    () -> new BusinessException(APIStatus.PRODUCT_ITEM_NOT_FOUND));
-            productItem.setQuantity(productItem.getQuantity() + item.getQuantity());
-            productItemRepository.save(productItem);
+        OrderActionManager orderActionManager = new OrderActionManager();
+        switch (status) {
+            case 1:
+                orderActionManager.setActionStrategy(new CancelOrderStrategy(orderRepository, productItemRepository, userDetailService));
+                break;
+            case 2:
+                orderActionManager.setActionStrategy(new DeliverOrderStrategy(orderRepository, userDetailService));
+                break;
+            case 3:
+                orderActionManager.setActionStrategy(new CompleteOrderStrategy(orderRepository, userDetailService));
+                break;
+            default:
+                throw new BusinessException(APIStatus.ORDER_STATUS_NOT_FOUND);
         }
-        order.setCanceledAt(CommonModel.resultTimestamp());
-        order.setOrderStatus(OrderStatus.CANCELED);
-        order.setCommonUpdate(userDetailService.getIdLogin());
-        orderRepository.save(order);
+        orderActionManager.executeAction(order);
     }
 }

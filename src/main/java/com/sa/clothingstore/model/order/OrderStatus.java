@@ -9,7 +9,8 @@ public enum OrderStatus {
     PENDING("PENDING"),
     CANCELED("CANCELED"),
     DELIVERED("DELIVERED"),
-    COMPLETED("COMPLETED");
+    COMPLETED("COMPLETED"),
+    PAID("PAID");
 
     private final String orderStatus;
     public static OrderStatus convertIntegerToOrderStatus(int status) {
@@ -18,6 +19,7 @@ public enum OrderStatus {
             case 1 -> OrderStatus.CANCELED;
             case 2 -> OrderStatus.DELIVERED;
             case 3 -> OrderStatus.COMPLETED;
+            case 4 -> OrderStatus.PAID;
             default -> null;
         };
     }

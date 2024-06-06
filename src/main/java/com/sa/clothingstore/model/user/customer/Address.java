@@ -1,5 +1,6 @@
 package com.sa.clothingstore.model.user.customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -33,6 +34,7 @@ public class Address {
     private String postalCode;
     @Column(name = "is_default")
     private boolean isDefault;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer")
     private Customer customer;
