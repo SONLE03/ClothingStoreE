@@ -3,6 +3,7 @@ package com.sa.clothingstore.controller.payment;
 import com.sa.clothingstore.constant.APIConstant;
 import com.sa.clothingstore.controller.order.OrderController;
 import com.sa.clothingstore.service.order.OrderService;
+import com.sa.clothingstore.service.payment.VNPayAdapter;
 import com.sa.clothingstore.util.vnpay.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 public class VNPayController {
+    private final VNPayAdapter vnPayAdapter;
     private final VNPayService vnPayService;
     private final OrderService orderService;
     @PostMapping(APIConstant.SUBMIT_ORDER)
@@ -24,7 +26,8 @@ public class VNPayController {
                               HttpServletRequest request){
         String orderInfoWithUUID = orderInfo + " " + orderId.toString();
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-        String vnpayUrl = vnPayService.doPost(request, orderTotal, orderInfoWithUUID, baseUrl);
+//        String vnpayUrl = vnPayService.doPost(request, orderTotal, orderInfoWithUUID, baseUrl);
+        String vnpayUrl = vnPayAdapter.processPayment(request, orderTotal, orderInfoWithUUID, baseUrl);
         return vnpayUrl;
     }
     @GetMapping(APIConstant.VNPAY_RETURN)
