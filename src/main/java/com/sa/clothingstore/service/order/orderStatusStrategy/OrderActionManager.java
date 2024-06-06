@@ -1,11 +1,7 @@
-package com.sa.clothingstore.service.order;
+package com.sa.clothingstore.service.order.orderStatusStrategy;
 
 import com.sa.clothingstore.model.order.Order;
-import com.sa.clothingstore.model.order.OrderStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class OrderActionManager {

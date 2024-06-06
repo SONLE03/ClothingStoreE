@@ -1,4 +1,4 @@
-package com.sa.clothingstore.service.order;
+package com.sa.clothingstore.service.order.orderStatusStrategy;
 
 import com.sa.clothingstore.constant.APIStatus;
 import com.sa.clothingstore.exception.BusinessException;

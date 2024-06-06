@@ -19,8 +19,11 @@ import com.sa.clothingstore.repository.order.OrderRepository;
 import com.sa.clothingstore.repository.product.ProductItemRepository;
 import com.sa.clothingstore.repository.customer.CustomerRepository;
 import com.sa.clothingstore.service.email.EmailService;
+import com.sa.clothingstore.service.order.orderStatusStrategy.CancelOrderStrategy;
+import com.sa.clothingstore.service.order.orderStatusStrategy.CompleteOrderStrategy;
+import com.sa.clothingstore.service.order.orderStatusStrategy.DeliverOrderStrategy;
+import com.sa.clothingstore.service.order.orderStatusStrategy.OrderActionManager;
 import com.sa.clothingstore.service.user.service.UserDetailService;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +31,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -98,11 +100,13 @@ public class OrderServiceImp implements OrderService{
         }else{
 //            _total = BigDecimal.ZERO;
         }
+        BigDecimal shippingFee = BigDecimal.valueOf(35000);
         Order order = Order.builder()
                 .note(orderRequest.getNote())
                 .customer(customer)
                 .address(address)
                 .coupon(coupon)
+                .shippingFee(shippingFee)
                 .note(orderRequest.getNote())
                 .build();
         orderRepository.save(order);
@@ -139,6 +143,7 @@ public class OrderServiceImp implements OrderService{
         }
         orderItemRepository.saveAll(orderItems);
         _total = _total.add(_total.multiply(couponValue.divide(BigDecimal.valueOf(100))));
+        _total = _total.add(shippingFee);
         order.setTotal(_total);
         order.setCommonCreate(userDetailService.getIdLogin());
         PaymentMethod paymentMethod = PaymentMethod.convertIntegerToPaymentMethod(orderRequest.getPaymentMethod());

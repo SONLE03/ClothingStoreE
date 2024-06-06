@@ -40,12 +40,14 @@ public class Order extends CommonModel {
     @ManyToOne
     @JoinColumn(name = "shipping_address")
     private Address address;
+    @Column(name = "shipping_at")
+    private Date shippingAt;
+    @Column(name = "shipping_fee")
+    private BigDecimal shippingFee;
     @Column(name = "total")
     private BigDecimal total;
     @Column(name = "note")
     private String note;
-    @Column(name = "shipping_at")
-    private Date shippingAt;
     @Column(name = "completed_at")
     private Date completedAt;
     @Column(name = "payment_at")
