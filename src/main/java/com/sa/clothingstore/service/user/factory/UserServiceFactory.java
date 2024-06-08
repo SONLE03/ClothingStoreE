@@ -93,7 +93,9 @@ public abstract class UserServiceFactory  {
 
         var userImage = image;
         if(userImage != null){
-            fileUploadImp.delete(user.getImage().getCloudinaryId());
+            if(user.getImage() != null){
+                fileUploadImp.delete(user.getImage().getCloudinaryId());
+            }
             BufferedImage bi = ImageIO.read(userImage.getInputStream());
             if (bi == null) {
                 throw new BusinessException(APIStatus.IMAGE_NOT_FOUND);
