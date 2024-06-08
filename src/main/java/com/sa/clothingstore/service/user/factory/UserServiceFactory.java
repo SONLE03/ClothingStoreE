@@ -2,6 +2,7 @@ package com.sa.clothingstore.service.user.factory;
 
 import com.sa.clothingstore.constant.APIStatus;
 import com.sa.clothingstore.dto.request.user.UserRequest;
+import com.sa.clothingstore.dto.request.user.UserUpdateRequest;
 import com.sa.clothingstore.exception.BusinessException;
 import com.sa.clothingstore.model.attribute.Image;
 import com.sa.clothingstore.model.user.Role;
@@ -33,7 +34,7 @@ public abstract class UserServiceFactory  {
     private final FileUploadImp fileUploadImp;
     protected abstract User createUser(User user, UserRequest userRequest);
 
-    protected abstract User updateUser(User user, UserRequest userRequest);
+    protected abstract User updateUser(User user, UserUpdateRequest userRequest);
     protected abstract List<User> getAllUsersByRole(Integer role);
 
     @Transactional
@@ -74,31 +75,21 @@ public abstract class UserServiceFactory  {
         return createUser(user, userRequest);
     }
 
-    public User update(UUID userId, UserRequest userRequest, MultipartFile image) throws IOException {
+    public User update(UUID userId, UserUpdateRequest userRequest, MultipartFile image) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(() ->{
                 throw new BusinessException(APIStatus.USER_NOT_FOUND);
             }
         );
-        String oldEmail = user.getEmail();
-        String newEmail = userRequest.getEmail();
         String oldPhone = user.getPhone();
         String newPhone = userRequest.getPhone();
-        userRepository.findByEmail(newEmail).ifPresent(u -> {
-            if(!oldEmail.equals(newEmail)) {
-                throw new BusinessException(APIStatus.EMAIL_ALREADY_EXISTED);
-            }
-        });
         userRepository.findByPhone(newPhone).ifPresent(u -> {
             if(!oldPhone.equals(newPhone)) {
                 throw new BusinessException(APIStatus.PHONE_ALREADY_EXISTED);
             }
         });
-        user.setEmail(userRequest.getEmail());
         user.setFullName(userRequest.getFullName());
-        user.setNickName(userDetailService.generateNickname(userRequest.getEmail()));
         user.setPhone(userRequest.getPhone());
-        user.setDateOfBirth(userRequest.getDateOfBirth());
-        user.setEnabled(userRequest.getEnable() == Status.ACTIVE.ordinal());
+        user.setNickName(userRequest.getNickName());
 
         var userImage = image;
         if(userImage != null){

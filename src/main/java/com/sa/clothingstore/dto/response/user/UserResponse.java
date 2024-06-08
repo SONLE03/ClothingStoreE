@@ -26,7 +26,7 @@ public class UserResponse extends AddressResponse{
     @JsonProperty
     private String phone;
     @JsonProperty
-    private String fullname;
+    private String fullName;
     @JsonProperty
     private String password;
     @JsonProperty

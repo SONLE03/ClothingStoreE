@@ -1,5 +1,6 @@
 package com.sa.clothingstore.service.user.factory;
 
+import com.sa.clothingstore.dto.request.user.UserUpdateRequest;
 import com.sa.clothingstore.model.user.admin.Admin;
 import com.sa.clothingstore.repository.attribute.ImageRepository;
 import com.sa.clothingstore.repository.user.UserRepository;
@@ -25,7 +26,7 @@ public class AdminServiceFactory extends UserServiceFactory{
     }
     @Override
     @Transactional
-    protected User updateUser(User user, UserRequest userRequest) {
+    protected User updateUser(User user, UserUpdateRequest userRequest) {
         return user;
     }
 

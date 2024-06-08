@@ -3,6 +3,7 @@ package com.sa.clothingstore.controller.user;
 import com.sa.clothingstore.constant.APIConstant;
 import com.sa.clothingstore.dto.request.user.ChangePasswordRequest;
 import com.sa.clothingstore.dto.request.user.UserRequest;
+import com.sa.clothingstore.dto.request.user.UserUpdateRequest;
 import com.sa.clothingstore.model.user.Role;
 import com.sa.clothingstore.model.user.User;
 import com.sa.clothingstore.service.user.service.*;
@@ -64,7 +65,7 @@ public class UserController {
     }
     @PutMapping(APIConstant.USER_ID)
     @ResponseStatus(HttpStatus.OK)
-    public String updateUser(@PathVariable UUID userId, @RequestParam("image") @Nullable MultipartFile image, @ModelAttribute @Valid UserRequest userRequest) throws IOException {
+    public String updateUser(@PathVariable UUID userId, @RequestParam("image") @Nullable MultipartFile image, @ModelAttribute @Valid UserUpdateRequest userRequest) throws IOException {
         roleToServiceMap.get(userDetailService.getRoleById(userId)).updateUser(userId, userRequest, image);
         return "User modified successfully";
     }

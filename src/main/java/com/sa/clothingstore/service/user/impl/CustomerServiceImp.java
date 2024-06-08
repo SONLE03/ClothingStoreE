@@ -3,6 +3,7 @@ package com.sa.clothingstore.service.user.impl;
 import com.sa.clothingstore.constant.APIStatus;
 import com.sa.clothingstore.dto.request.user.AddressRequest;
 import com.sa.clothingstore.dto.request.user.UserRequest;
+import com.sa.clothingstore.dto.request.user.UserUpdateRequest;
 import com.sa.clothingstore.exception.BusinessException;
 import com.sa.clothingstore.model.user.customer.Address;
 import com.sa.clothingstore.model.user.customer.Customer;
@@ -93,7 +94,7 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public void updateUser(UUID userId, UserRequest userRequest, MultipartFile image) throws IOException {
+    public void updateUser(UUID userId, UserUpdateRequest userRequest, MultipartFile image) throws IOException {
         userRepository.save(customerServiceFactory.update(userId, userRequest, image));
     }
 

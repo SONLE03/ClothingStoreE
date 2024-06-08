@@ -1,6 +1,7 @@
 package com.sa.clothingstore.service.user.factory;
 
 import com.sa.clothingstore.dto.request.user.UserRequest;
+import com.sa.clothingstore.dto.request.user.UserUpdateRequest;
 import com.sa.clothingstore.model.user.customer.Customer;
 import com.sa.clothingstore.model.user.User;
 import com.sa.clothingstore.repository.attribute.ImageRepository;
@@ -25,7 +26,7 @@ public class CustomerServiceFactory extends UserServiceFactory{
     }
     @Override
     @Transactional
-    protected User updateUser(User user, UserRequest userRequest) {
+    protected User updateUser(User user, UserUpdateRequest userRequest) {
         return user;
     }
     @Override
