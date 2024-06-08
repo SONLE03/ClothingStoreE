@@ -55,8 +55,8 @@ public class User extends CommonModel implements UserDetails {
     private Image image;
     private boolean enabled;
     @JsonIgnore
-    @OneToOne(mappedBy = "user")
-    private ForgotPassword passwordResetToken;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<ForgotPassword> forgotPasswords;
 
     public User(@NotNull User user){
         this.fullName = user.getFullName();

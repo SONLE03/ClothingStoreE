@@ -117,7 +117,11 @@ public class AuthenticationServiceImp implements AuthenticationService{
     public UserResponse me() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        return modelMapper.map(currentUser, UserResponse.class);
+        UserResponse response = modelMapper.map(currentUser, UserResponse.class);
+        if(currentUser.getImage() != null){
+            response.setImage(currentUser.getImage().getUrl());
+        }
+        return response;
     }
 
     private AuthenticationResponse generateToken(User user){

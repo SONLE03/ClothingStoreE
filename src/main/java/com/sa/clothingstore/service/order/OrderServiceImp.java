@@ -148,9 +148,9 @@ public class OrderServiceImp implements OrderService{
         order.setCommonCreate(userDetailService.getIdLogin());
         PaymentMethod paymentMethod = PaymentMethod.convertIntegerToPaymentMethod(orderRequest.getPaymentMethod());
         if(paymentMethod != PaymentMethod.CASH){
-            order.setOrderStatus(OrderStatus.COMPLETED);
-            order.setCompletedAt(CommonModel.resultTimestamp());
-            sendOrder(order.getId());
+            order.setOrderStatus(OrderStatus.PAID);
+//            order.setCompletedAt(CommonModel.resultTimestamp());
+//            sendOrder(order.getId());
         }else{
             order.setOrderStatus(OrderStatus.PENDING);
         }
