@@ -89,16 +89,19 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
+    @Transactional
     public void createUser(UserRequest userRequest, Role role, MultipartFile image) throws IOException {
         userRepository.save(customerServiceFactory.create(userRequest, role, image));
     }
 
     @Override
+    @Transactional
     public void updateUser(UUID userId, UserUpdateRequest userRequest, MultipartFile image) throws IOException {
         userRepository.save(customerServiceFactory.update(userId, userRequest, image));
     }
 
     @Override
+    @Transactional
     public void deleteUser(UUID userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new BusinessException(APIStatus.USER_NOT_FOUND));

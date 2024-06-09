@@ -70,6 +70,23 @@ public class EmailServiceImp implements EmailService {
         return "Email sent for verification!";
     }
     @Override
+    public void sendUserCredential(String email, String fullName, String password) {
+        try{
+            EmailRequest emailRequest = EmailRequest.builder()
+                    .to(email)
+                    .text("This is your account: " +
+                            "Username: " + email +
+                            " Full name: " + fullName +
+                            " Password: " + password)
+                    .subject("User Credential")
+                    .build();
+            sendSimpleMailMessage(emailRequest);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+    @Override
     public Integer generateOtp(){
         Random random = new Random();
         return random.nextInt(100_000, 999_999);

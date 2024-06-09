@@ -14,6 +14,7 @@ public interface UserDetailService {
     String getUsernameLogin();
 
     Integer getRoleLogin();
+    Integer getRoleByEmail(String email);
     Integer getRoleById(UUID userId);
     User getProfile(UUID userId);
     String verifyOtp(Integer otp, String email);

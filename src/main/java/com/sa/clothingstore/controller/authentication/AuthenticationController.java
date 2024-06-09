@@ -36,6 +36,11 @@ public class AuthenticationController {
     public UserResponse authenticatedUser(){
         return authenticationService.me();
     }
+    @GetMapping(APIConstant.PRE_AUTH)
+    @ResponseStatus(HttpStatus.OK)
+    public Integer getRole(@PathVariable String email){
+        return userDetailService.getRoleByEmail(email);
+    }
     @PostMapping(APIConstant.SIGNUP)
     public ResponseEntity<User> register(@RequestBody @Valid RegisterRequest registerRequest) {
         User registeredUser = authenticationService.signup(registerRequest);

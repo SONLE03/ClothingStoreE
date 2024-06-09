@@ -10,6 +10,7 @@ import com.sa.clothingstore.model.user.Status;
 import com.sa.clothingstore.model.user.User;
 import com.sa.clothingstore.repository.attribute.ImageRepository;
 import com.sa.clothingstore.repository.user.UserRepository;
+import com.sa.clothingstore.service.email.EmailService;
 import com.sa.clothingstore.service.user.service.UserDetailService;
 import com.sa.clothingstore.util.fileUpload.FileUploadImp;
 import jakarta.transaction.Transactional;

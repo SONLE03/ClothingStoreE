@@ -94,6 +94,11 @@ public class UserDetailServiceImp implements UserDetailService {
     }
 
     @Override
+    public Integer getRoleByEmail(String email) {
+        return userRepository.getRoleByEmail(email);
+    }
+
+    @Override
     public User getProfile(UUID userId) {
         if(!userRepository.existsById(userId)){
             throw new BusinessException(APIStatus.USER_NOT_FOUND);

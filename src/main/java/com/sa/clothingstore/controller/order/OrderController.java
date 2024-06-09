@@ -2,8 +2,10 @@ package com.sa.clothingstore.controller.order;
 
 import com.sa.clothingstore.constant.APIConstant;
 import com.sa.clothingstore.dto.request.order.OrderRequest;
+import com.sa.clothingstore.dto.response.order.CustomerOrderResponse;
 import com.sa.clothingstore.dto.response.order.OrderItemResponse;
 import com.sa.clothingstore.dto.response.order.OrderResponse;
+import com.sa.clothingstore.model.user.customer.Customer;
 import com.sa.clothingstore.service.order.OrderService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -39,6 +41,11 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> getOrderByCustomer(@PathVariable UUID customerId){
         return orderService.getAllOrderByCustomer(customerId);
+    }
+    @GetMapping(APIConstant.ORDER_ANALYSIS_CUSTOMER)
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerOrderResponse getOrdersAnalysisByCustomer(@PathVariable UUID customerId){
+        return orderService.getTotalAmountAndItemCountByCustomerId(customerId);
     }
     @PostMapping(APIConstant.ORDER_ID)
     @ResponseStatus(HttpStatus.OK)

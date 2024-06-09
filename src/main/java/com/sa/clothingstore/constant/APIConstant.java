@@ -8,6 +8,7 @@ public class APIConstant {
 
     // Auth Routes
     public static final String AUTH = VERSION + "/auth";
+    public static final String PRE_AUTH = "/{email}";
     public static final String LOGIN = "/login";
     public static final String LOGOUT = "/logout";
     public static final String SIGNUP = "/signup";
@@ -83,6 +84,7 @@ public class APIConstant {
     public static final String ORDER_ID_STATUS = "/{orderId}/{orderStatus}";
     public static final String ORDER_STATUS = "/status/{orderStatus}";
     public static final String ORDER_CUSTOMER = "/customer/{customerId}";
+    public static final String ORDER_ANALYSIS_CUSTOMER = "/analysis/customer/{customerId}";
     // VNPay
     public static final String VNPAY = VERSION + "/vnpay";
     public static final String SUBMIT_ORDER = "/submitOrder";

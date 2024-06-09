@@ -26,6 +26,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("select u.role from User u where u.id = ?1")
     Integer getRoleById(UUID userId);
 
+    @Query("select u.role from User u where u.email = ?1")
+    Integer getRoleByEmail(String email);
+
     @Query("SELECT u FROM User u WHERE u.id = ?1")
     User getUserDetail(UUID userId);
 }

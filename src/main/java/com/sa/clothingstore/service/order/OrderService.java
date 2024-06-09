@@ -1,6 +1,7 @@
 package com.sa.clothingstore.service.order;
 
 import com.sa.clothingstore.dto.request.order.OrderRequest;
+import com.sa.clothingstore.dto.response.order.CustomerOrderResponse;
 import com.sa.clothingstore.dto.response.order.OrderItemResponse;
 import com.sa.clothingstore.dto.response.order.OrderResponse;
 import com.sa.clothingstore.dto.response.report.MonthlyRevenueResponse;
@@ -18,5 +19,7 @@ public interface OrderService {
     void updateOrderStatusVNPay(UUID orderId, Integer status);
     void sendOrder(UUID orderId);
     void updateOrderStatus(UUID orderId, Integer status);
+    CustomerOrderResponse getTotalAmountAndItemCountByCustomerId(UUID customerId);
+
 }
 

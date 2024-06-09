@@ -3,6 +3,7 @@ package com.sa.clothingstore.service.order;
 import com.sa.clothingstore.constant.APIStatus;
 import com.sa.clothingstore.dto.request.order.OrderItemRequest;
 import com.sa.clothingstore.dto.request.order.OrderRequest;
+import com.sa.clothingstore.dto.response.order.CustomerOrderResponse;
 import com.sa.clothingstore.dto.response.order.OrderItemResponse;
 import com.sa.clothingstore.dto.response.order.OrderResponse;
 import com.sa.clothingstore.exception.BusinessException;
@@ -58,7 +59,14 @@ public class OrderServiceImp implements OrderService{
         }
         return orderRepository.getOrderByStatus(orderStatus);
     }
+    @Override
+    public CustomerOrderResponse getTotalAmountAndItemCountByCustomerId(UUID customerId) {
+        if(!customerRepository.existsById(customerId)) {
+            throw new BusinessException(APIStatus.CUSTOMER_NOT_FOUND);
+        }
 
+        return orderRepository.getTotalAmountAndItemCountByCustomerId(customerId);
+    }
     @Override
     public List<OrderResponse> getAllOrderByCustomer(UUID customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(

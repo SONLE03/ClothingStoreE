@@ -1,5 +1,6 @@
 package com.sa.clothingstore.repository.order;
 
+import com.sa.clothingstore.dto.response.order.CustomerOrderResponse;
 import com.sa.clothingstore.dto.response.order.OrderResponse;
 import com.sa.clothingstore.model.order.Order;
 import com.sa.clothingstore.model.order.OrderStatus;
@@ -7,6 +8,7 @@ import com.sa.clothingstore.model.product.Product;
 import com.sa.clothingstore.model.user.customer.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,4 +35,7 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
             "FROM Order o JOIN o.orderItems oi " +
             "WHERE o.customer = ?1 AND oi.productItem.product = ?2 AND o.orderStatus = 'COMPLETED'")
     boolean hasCustomerPurchasedProduct(Customer customer, Product product);
+
+    @Query("SELECT NEW com.sa.clothingstore.dto.response.order.CustomerOrderResponse(SUM(oi.total), COUNT(DISTINCT oi.productItem), SUM(oi.quantity)) FROM Order o JOIN o.orderItems oi WHERE o.customer.id = :customerId AND o.orderStatus = 'COMPLETED'")
+    CustomerOrderResponse getTotalAmountAndItemCountByCustomerId(@Param("customerId") UUID customerId);
 }

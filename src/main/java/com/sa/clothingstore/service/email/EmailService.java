@@ -13,4 +13,5 @@ public interface EmailService {
     Integer generateOtp();
     void sendOrder(Order order);
     void sendImportProduct(ImportInvoice importInvoice);
+    void sendUserCredential(String email, String fullName, String password);
 }
