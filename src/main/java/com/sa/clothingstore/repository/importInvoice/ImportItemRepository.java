@@ -20,7 +20,7 @@ public interface ImportItemRepository extends JpaRepository<ImportItem, UUID> {
     List<ImportItem> findByImportInvoice(ImportInvoice importInvoice);
 
     @Query("SELECT NEW com.sa.clothingstore.dto.response.importProduct.ImportItemResponse(" +
-            "i.productItem.id, i.quantity, i.price, i.total) " +
+            "i.productItem.id, i.productItem.product.product_Name, i.quantity, i.price, i.total) " +
             "FROM ImportItem i WHERE i.importInvoice.id = :importId")
     List<ImportItemResponse> getImportItem(UUID importId);
     @Query("SELECT NEW com.sa.clothingstore.dto.response.report.DailyExpenseResponse(" +

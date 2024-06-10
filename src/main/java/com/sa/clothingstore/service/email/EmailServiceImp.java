@@ -62,7 +62,7 @@ public class EmailServiceImp implements EmailService {
                                     .build();
         ForgotPassword fp = ForgotPassword.builder()
                             .otp(otp)
-                            .expiryDate(new Date(System.currentTimeMillis() + 70 * 1000))
+                            .expiryDate(new Date(System.currentTimeMillis() + 5 * 60 * 1000))
                             .user(user)
                             .build();
         sendSimpleMailMessage(emailRequest);

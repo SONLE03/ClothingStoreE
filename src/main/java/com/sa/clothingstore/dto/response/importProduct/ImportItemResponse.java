@@ -17,6 +17,8 @@ import java.util.UUID;
 public class ImportItemResponse {
     @JsonProperty("productItem")
     private UUID productItem;
+    @JsonProperty("productName")
+    private String productName;
     @JsonProperty("quantity")
     private Integer quantity;
     @JsonProperty("price")
