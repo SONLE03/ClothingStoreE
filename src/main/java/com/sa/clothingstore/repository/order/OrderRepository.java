@@ -24,10 +24,9 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
             "WHERE o.orderStatus = ?1 " +
             "ORDER BY o.createdAt DESC")
     List<OrderResponse> getOrderByStatus(OrderStatus orderStatus);
-    @Query("SELECT NEW com.sa.clothingstore.dto.response.order.OrderResponse(o.id, o.completedAt, o.total, o.customer.id,  o.customer.fullName, o.customer.phone, o.orderStatus) " +
+    @Query("SELECT NEW com.sa.clothingstore.dto.response.order.OrderResponse(o.id, o.createdAt, o.total, o.customer.id,  o.customer.fullName, o.customer.phone, o.orderStatus) " +
             "FROM Order o " +
             "WHERE o.customer = ?1 " +
-            "AND o.orderStatus = 'COMPLETED'" +
             "ORDER BY o.completedAt DESC")
     List<OrderResponse> getOrderByCustomer(Customer customer);
 
