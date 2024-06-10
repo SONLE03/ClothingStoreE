@@ -47,8 +47,9 @@ public class AdminServiceImp implements AdminService {
     public void deleteUser(UUID userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new BusinessException(APIStatus.USER_NOT_FOUND));
-        user.setEnabled(false);
-        userRepository.save(user);
+//        user.setEnabled(false);
+//        userRepository.save(user);
+        userRepository.delete(user);
     }
 
 }

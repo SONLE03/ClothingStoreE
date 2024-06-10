@@ -10,6 +10,7 @@ import com.sa.clothingstore.exception.BusinessException;
 import com.sa.clothingstore.model.user.RefreshToken;
 import com.sa.clothingstore.model.user.Role;
 import com.sa.clothingstore.model.user.User;
+import com.sa.clothingstore.model.user.admin.Admin;
 import com.sa.clothingstore.model.user.customer.Customer;
 import com.sa.clothingstore.repository.customer.CustomerRepository;
 import com.sa.clothingstore.repository.user.UserRepository;
@@ -69,6 +70,11 @@ public class AuthenticationServiceImp implements AuthenticationService{
         customer.setCommonCreate(userDetailService.getIdLogin());
         customerRepository.save(customer);
         return customer;
+//        user.setRole(Role.ADMIN);
+//        Admin admin = new Admin(user);
+//        admin.setCommonCreate(userDetailService.getIdLogin());
+//        adminRepository.save(admin);
+//        return admin;
     }
 
     @Override

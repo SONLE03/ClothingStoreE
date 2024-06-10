@@ -19,7 +19,7 @@ public class CompleteOrderStrategy implements OrderActionStrategy{
     @Override
     public void updateOrderStatus(Order order) {
         OrderStatus orderStatus = order.getOrderStatus();
-        if(orderStatus == OrderStatus.CANCELED || orderStatus == OrderStatus.PENDING){
+        if(orderStatus == OrderStatus.CANCELED){
             throw new BusinessException(APIStatus.ORDER_NOT_COMPLETE);
         }
         if(order.getPaymentMethod() == PaymentMethod.CASH){
